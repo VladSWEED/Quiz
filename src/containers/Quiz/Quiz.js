@@ -1,10 +1,11 @@
 import React from 'react'
 import s from './Quiz.module.css'
 import ActiveQuiz from '../../components/ActiveQuiz'
+import FinishedQuiz from '../../components/FinishedQuiz'
 
 class Quiz extends React.Component{
   state={
-    isFinished:false,
+    isFinished:true,
     activeQuestion:0,
     answerState:null,  //{[id]:'success' 'error'}
     quiz:[
@@ -84,7 +85,7 @@ class Quiz extends React.Component{
 
         {
           this.state.isFinished
-            ? <h1>Finished</h1>
+            ? <FinishedQuiz/>
             : <ActiveQuiz 
             question={this.state.quiz[this.state.activeQuestion].question}
             answers={this.state.quiz[this.state.activeQuestion].answers}
