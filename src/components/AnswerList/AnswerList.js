@@ -1,6 +1,6 @@
 import React from 'react'
 import s from './AnswerList.module.css'
-import AnswerItem from './AnswerItem'
+import AnswerItem from '../AnswerItem/AnswerItem'
 
 const AnswerList=props=>{
   return(
