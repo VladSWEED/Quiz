@@ -9,7 +9,7 @@ export default class QuizList extends React.Component{
       return(
         <li key={index}>
           <NavLink to={'/quiz/' + quiz}>
-            Tect {quiz}
+            Tecт {quiz}
           </NavLink>
 
            </li>
