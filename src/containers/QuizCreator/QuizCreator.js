@@ -4,6 +4,7 @@ import Button from '../../components/UI/Button/Button'
 import {createControl} from '../../form/formFramework'
 import Input from '../../components/UI/Input/Input'
 import Auxilliary from '../../hoc/Auxilliary/Auxilliary'
+import Select from '../../components/UI/Select/Select'
 
 
 function createOptionControl(number) {
@@ -33,7 +34,8 @@ export default class QuizCreator extends React.Component{
 
   state={
     quiz:[],
-    formControls:createFormControls()
+    formControls:createFormControls(),
+    rightAnswerId:1
   }
 
   submitHandler=event=>{
@@ -50,6 +52,12 @@ export default class QuizCreator extends React.Component{
 
   changeHandler=(value,controlName)=>{
 
+  }
+
+  selectChangehandler=event=>{
+    this.setState({
+      rightAnswerId:+event.target.value
+    })
   }
 
   renderControls(){
@@ -72,16 +80,25 @@ export default class QuizCreator extends React.Component{
   }
 
   render(){
+    const select=<Select
+          label="Выберите правильный ответ"
+          value={this.state.rightAnswerId}
+          onChange={this.selectChangehandler}
+          options={[
+            {text:1,value:1},
+            {text:2,value:2},
+            {text:3,value:3},
+            {text:4,value:4}
+          ]}/>
     return(
       <div className={s.QuizCreator}>
         <div>
           <h1>Создание теста</h1>
             <form onSubmit={this.submitHandler}>
               {this.renderControls()}
-              <select>
-                  <option>Пункт 1</option>
-                  <option>Пункт 2</option>
-              </select>
+
+              {select}
+
                 <Button type="primary" onClick={this.addQuestionHandler}>Добавить вопрос</Button>
                 <Button type="success" onClick={this.createQuizHandler}>Создать тест</Button>
             </form>
