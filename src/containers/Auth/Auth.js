@@ -13,6 +13,7 @@ import is from 'is_js'
 
 export default class Auth extends React.Component{
   state={
+    isFormValid:false,
     formControls:{
       email:{
         value:'',
@@ -81,9 +82,14 @@ export default class Auth extends React.Component{
     control.valid=this.validateControl(control.value,control.validation)
 
     formControls[controlName]=control
+
+    let isFormValid=true
+    Object.keys(formControls).forEach(name=>{
+      isFormValid=formControls[name].valid && isFormValid
+    })
     
     this.setState({
-      formControls
+      formControls,isFormValid
     })
   }
 
@@ -115,8 +121,8 @@ export default class Auth extends React.Component{
           <h1>Авторизация</h1>
           <form onSubmit={this.submitHandler} className={s.AuthForm}>
             {this.renderInputs()}
-            <Button type="success" onClick={this.loginHandler}>Войти</Button>
-            <Button type="primary" onClick={this.registerHandler}>Зарегистрироваться</Button>
+            <Button disabled={!this.state.isFormValid} type="success" onClick={this.loginHandler}>Войти</Button>
+            <Button disabled={!this.state.isFormValid} type="primary" onClick={this.registerHandler}>Зарегистрироваться</Button>
           </form>
         </div>
       </div>
