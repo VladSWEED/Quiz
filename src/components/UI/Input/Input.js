@@ -17,11 +17,11 @@ const Input=props=>{
     cls.push(s.invalid)
   }
 
-   
+   debugger
 
   return(
     <div className={cls.join(' ')}>
-      <label for={htmlFor}>{props.label}</label>
+      <label htmlFor={htmlFor}>{props.label}</label>
       <input type={inputType} id={htmlFor} value={props.value} onChange={props.onChange}/>
 
       {isInvalid(props)
@@ -29,7 +29,6 @@ const Input=props=>{
         : null 
       }
 
-      
     </div>
   )
 }
