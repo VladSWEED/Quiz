@@ -17,8 +17,6 @@ const Input=props=>{
     cls.push(s.invalid)
   }
 
-   debugger
-
   return(
     <div className={cls.join(' ')}>
       <label htmlFor={htmlFor}>{props.label}</label>
