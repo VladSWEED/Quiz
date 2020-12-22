@@ -2,6 +2,8 @@ import React from 'react'
 import s from './Quiz.module.css'
 import ActiveQuiz from '../../components/ActiveQuiz/ActiveQuiz'
 import FinishedQuiz from '../../components/FinishedQuiz/FinishedQuiz'
+import axios from '../../axios/axios-quiz'
+import Loader from '../../components/UI/Loader/Loader'
 
 class Quiz extends React.Component{
   state={
@@ -9,30 +11,32 @@ class Quiz extends React.Component{
     isFinished:false,
     activeQuestion:0,
     answerState:null,  //{[id]:'success' 'error'}
-    quiz:[
-      {
-        question:'Какого цвета небо?',
-        rightAnswerId:2,
-        id:1,
-        answers:[
-          {text:'Черный',id:1},
-          {text:'Синий',id:2},
-          {text:'Красный',id:3},
-          {text:'Зеленый',id:4}
-        ]
-      },
-      {
-        question:'В каком году основали Минск?',
-        rightAnswerId:3,
-        id:2,
-        answers:[
-          {text:'1800',id:1},
-          {text:'1101',id:2},
-          {text:'1067',id:3},
-          {text:'1245',id:4}
-        ]
-      }
-    ]
+    quiz:[],
+    loading:true
+    // quiz:[
+    //   {
+    //     question:'Какого цвета небо?',
+    //     rightAnswerId:2,
+    //     id:1,
+    //     answers:[
+    //       {text:'Черный',id:1},
+    //       {text:'Синий',id:2},
+    //       {text:'Красный',id:3},
+    //       {text:'Зеленый',id:4}
+    //     ]
+    //   },
+    //   {
+    //     question:'В каком году основали Минск?',
+    //     rightAnswerId:3,
+    //     id:2,
+    //     answers:[
+    //       {text:'1800',id:1},
+    //       {text:'1101',id:2},
+    //       {text:'1067',id:3},
+    //       {text:'1245',id:4}
+    //     ]
+    //   }
+    // ]
   }
 
   onAnswerClickHandler=(answerId)=>{
@@ -93,29 +97,43 @@ class Quiz extends React.Component{
     })
   }
 
+  async componentDidMount(){
+    try{
+      const response=await axios.get(`/quizes/${this.props.match.params.id}.json`)
+      const quiz=response.data
+      this.setState({
+        quiz,
+        loading:false
+      })
+    }catch(e){
+      console.log(e)
+    }
+  }
+
 
   render(){
     return(
       <div className={s.Quiz}>
         <div className={s.QuizWrapper}>
         <h1>Ответьте на все вопросы</h1>
-
         {
-          this.state.isFinished
-            ? <FinishedQuiz
-                  results={this.state.results}
-                  quiz={this.state.quiz}
-                  onRetry={this.onRetry}
-            />
-            : <ActiveQuiz 
-            question={this.state.quiz[this.state.activeQuestion].question}
-            answers={this.state.quiz[this.state.activeQuestion].answers}
-            onAnswerClickHandler={this.onAnswerClickHandler}
-            quizLength={this.state.quiz.length}
-            answerNumber={this.state.activeQuestion+1}
-            state={this.state.answerState}
-            />
-        }
+        this.state.loading
+          ? <Loader/>
+          : this.state.isFinished
+          ? <FinishedQuiz
+                results={this.state.results}
+                quiz={this.state.quiz}
+                onRetry={this.onRetry}
+          />
+          : <ActiveQuiz 
+              question={this.state.quiz[this.state.activeQuestion].question}
+              answers={this.state.quiz[this.state.activeQuestion].answers}
+              onAnswerClickHandler={this.onAnswerClickHandler}
+              quizLength={this.state.quiz.length}
+              answerNumber={this.state.activeQuestion+1}
+              state={this.state.answerState}
+          />
+          }
         </div>
       </div>
     )
