@@ -27,7 +27,6 @@ export default class QuizList extends React.Component{
   async componentDidMount(){
     try{
       const response=await axios.get('/quizes.json')
-      console.log(response.data);
       const quizes=[]
       Object.keys(response.data).forEach((key,index)=>{
         quizes.push({
